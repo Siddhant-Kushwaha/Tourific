@@ -1,0 +1,42 @@
+<%- layout('./layouts/boilerplate.ejs')%>
+    <div id="map" style="width:100%; height:500px"></div>
+    <h1>All Adventure Spots</h1>
+    <div>
+        <a href="/adventureSites/new">Add Adventure Site</a>
+    </div>
+  
+    <% for(let site of sites) {%>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if(site.images.length===0) { %>
+                        <img class="img-fluid" src="https://res.cloudinary.com/djbomerqh/image/upload/v1634283780/Tourific/nzfpx6olqskxknxemqcg.jpg" alt="">
+                    <% }else { %>  
+                        <img class="img-fluid" src="<%= site.images[0].url %>" alt="">
+                    <% } %> 
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%=site.title%>
+                        </h5>
+                        <p class="card-text">
+                            <%=site.description%>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%=site.location%>
+                            </small>
+                        </p>
+                        <a href="adventureSites/<%=site._id%>" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <script>
+            const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+            const sites = { features: <%- JSON.stringify(sites) %>}
+        </script>
+        
+        <script src="/js/clusterMap.js"></script>
